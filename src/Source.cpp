@@ -12,7 +12,7 @@
 std::list<std::string> leatherBootsRecipe = { "Leather", "String" };
 
 void printMenu() {
-	std::cout << "Goblin Warfare: Windows 11 Edition (Alpha 3)" << std::endl;
+	std::cout << "Goblin Warfare: Windows 11 Edition (Alpha 3.01)" << std::endl;
 	std::cout << "1. Play" << std::endl;
 	std::cout << "2. Exit" << std::endl;
 }
@@ -35,7 +35,7 @@ int main() {
 		Player player("player", 1000, 100, 1, 0, 100, 0, 0, 10, 0, false, {}, 1000);
 		std::cout << "You, a young kid, heard a legend about the holy scriptures..." << std::endl;
 		pause(1);
-		std::cout << "For in seven days Yahweh created the earth..." << std::endl;
+		std::cout << "\"For in seven days Yahweh created the earth...\"" << std::endl;
 		pause(1);
 		std::cout << "But you doubted..." << std::endl;
 		pause(1);
@@ -79,7 +79,7 @@ int main() {
 						player.takeDamage(goblin.getDamage());
 					}
 					else {
-						std::cout << "You used the holy sciptures, the ultimate weapon in all of OmVille... You can see the goblin tremble in fear. He's dead." << std::endl;
+						std::cout << "You used the holy sciptures, the ultimate weapon in all of OmVille... You can see the goblin tremble in fear. The very next moment... He's dead." << std::endl;
 					}
 					goblin.takeDamage(player.getDamage());
 					if (player.getHealth() <= 0) {

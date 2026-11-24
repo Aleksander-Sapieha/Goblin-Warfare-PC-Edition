@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(std::string name, int health, int hunger, int level, int xp, int xpTilNextLevel, int score, int gold, int damage, int armor, bool hasScriptures,
+Player::Player(std::string name, int health, int hunger, int level, int xp, int xpTilNextLevel, int score, int gold, int damage, float armor, bool hasScriptures,
 	std::list<std::string> inventory, int maxHealth)
 	: name(name), health(health), hunger(hunger), level(level), xp(xp), xpTilNextLevel(xpTilNextLevel), score(score), gold(gold), damage(damage), armor(armor),
 	hasScriptures(hasScriptures), inventory(inventory), maxHealth(maxHealth) {
@@ -43,7 +43,7 @@ int Player::getLevel() {
 }
 
 void Player::takeDamage(int points) {
-	health = health - points;
+	health = health - points * (1 - armor);
 }
 
 void Player::heal(int points) {
@@ -77,6 +77,20 @@ void Player::takegold(int points) {
 
 int Player::getArmor() {
 	return armor;
+}
+
+void Player::giveArmor(float points) {
+	armor = armor + points;
+	if (armor >= 1.0f) {
+		armor = 0.9f;
+	}
+}
+
+void Player::takeArmor(float points) {
+	armor = armor - points;
+	if (armor < 0.0f) {
+		armor = 0.0f;
+	}
 }
 
 bool Player::getScripturesStatus() {

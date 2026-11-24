@@ -19,7 +19,7 @@ private:
 	int maxHealth;
 
 public:
-	Player(std::string name, int health, int hunger, int level, int xp, int xpTilNextLevel, int score, int gold, int damage, int armor, bool hasScriptures,
+	Player(std::string name, int health, int hunger, int level, int xp, int xpTilNextLevel, int score, int gold, int damage, float armor, bool hasScriptures,
 		std::list<std::string> inventory, int maxHealth);
 	void takeDamage(int points);
 	std::string getName();
@@ -38,6 +38,8 @@ public:
 	int getLevel();
 	void takegold(int points);
 	int getArmor();
+	void giveArmor(float points);
+	void takeArmor(float points);
 	bool getScripturesStatus();
 	void giveScriptures();
 	void takeScriptures();
