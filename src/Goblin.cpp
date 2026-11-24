@@ -1,5 +1,5 @@
-#include "Goblin.h"
-#include "Player.h"
+#include "Goblin.hpp"
+#include "Player.hpp"
 
 Goblin::Goblin(int level, int scoreValue, int health, int attackPower, int goldReward) 
 	: level(level), scoreValue(scoreValue), health(health), attackPower(attackPower), goldReward(goldReward) {};

@@ -6,8 +6,8 @@
 #include <algorithm> // for std::find
 #include <string>
 
-#include "Player.h"
-#include "Goblin.h"
+#include "Player.hpp"
+#include "Goblin.hpp"
 
 std::list<std::string> leatherBootsRecipe = { "Leather", "String" };
 

@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Player.hpp"
 
 Player::Player(std::string name, int health, int hunger, int level, int xp, int xpTilNextLevel, int score, int gold, int damage, int armor, bool hasScriptures,
 	std::list<std::string> inventory, int maxHealth)
