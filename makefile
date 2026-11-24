@@ -1,5 +1,6 @@
 all: windows linux
 	@echo "Make All Finished"
+	
 linux:
 	@echo "Making Linux"
 	@mkdir -p build/linux
