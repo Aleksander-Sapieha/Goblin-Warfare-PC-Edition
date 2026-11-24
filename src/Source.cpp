@@ -1,3 +1,13 @@
+/*
+**  File: Goblin-Warfare-PC-Edition/src/Source.cpp
+**
+**  Creator: Aleksander Sapieha (sourceguy68@gmail.com)
+**
+**  Contributors:
+**  Aleksander Sapieha (sourceguy68@gmail.com)
+*/
+
+
 #include <iostream>
 #include <thread>
 #include <chrono>
@@ -12,7 +22,7 @@
 std::list<std::string> leatherBootsRecipe = { "Leather", "String" };
 
 void printMenu() {
-	std::cout << "Goblin Warfare: Windows 11 Edition (Alpha 3.01)" << std::endl;
+	std::cout << "Goblin Warfare: PC Edition (Alpha 3.01)" << std::endl;
 	std::cout << "1. Play" << std::endl;
 	std::cout << "2. Exit" << std::endl;
 }

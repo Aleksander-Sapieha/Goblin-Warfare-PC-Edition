@@ -1,3 +1,12 @@
+/*
+**  File: Goblin-Warfare-PC-Edition/src/Goblin.cpp
+**
+**  Creator: Aleksander Sapieha (sourceguy68@gmail.com)
+**
+**  Contributors:
+**  Aleksander Sapieha (sourceguy68@gmail.com)
+*/
+
 #include "Goblin.hpp"
 #include "Player.hpp"
 

@@ -1,3 +1,12 @@
+/*
+**  File: Goblin-Warfare-PC-Edition/src/Player.cpp
+**
+**  Creator: Aleksander Sapieha (sourceguy68@gmail.com)
+**
+**  Contributors:
+**  Aleksander Sapieha (sourceguy68@gmail.com)
+*/
+
 #include "Player.hpp"
 
 Player::Player(std::string name, int health, int hunger, int level, int xp, int xpTilNextLevel, int score, int gold, int damage, float armor, bool hasScriptures,
