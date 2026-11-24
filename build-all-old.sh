@@ -1,5 +1,5 @@
 #
-#     Goblin-Warfare-PC-Edition/build-all.sh
+#     Goblin-Warfare-PC-Edition/build-all-old.sh
 #
 #     Creator: Aleksander Sapieha (sourceguy68@gmail.com)
 #
