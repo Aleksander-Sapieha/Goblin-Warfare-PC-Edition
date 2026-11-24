@@ -1,9 +1,11 @@
+#
 #     Goblin-Warfare-PC-Edition/build-all.sh
 #
 #     Creator: Aleksander Sapieha (sourceguy68@gmail.com)
 #
 #     Contributors:
 #     Aleksander Sapieha (sourceguy68@gmail.com)
+#
 
 mkdir -p build/windows
 mkdir -p build/linux
