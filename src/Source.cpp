@@ -168,11 +168,11 @@ int main() {
 					pause(1);
 				}
 				else if (purchase == 7) {
-					choice = NULL;
+					choice = 0;
 				}
 				else {
 					std::cout << "Not enough money, or incorrect choice." << std::endl;
-					choice = NULL;
+					choice = 0;
 					pause(1);
 				}
 			}
