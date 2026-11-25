@@ -1,3 +1,13 @@
+#
+#     Goblin-Warfare-PC-Edition/makefile
+#
+#     Creator: Aleksander Sapieha (sourceguy68@gmail.com)
+#
+#     Contributors:
+#     Aleksander Sapieha (sourceguy68@gmail.com)
+#
+
+
 all: windows linux
 	@echo "Make All Finished"
 	
