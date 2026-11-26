@@ -1,3 +1,12 @@
+#
+#     Goblin-Warfare-PC-Edition/makefile
+#
+#     Creator: Aleksander Sapieha (sourceguy68@gmail.com)
+#
+#     Contributors:
+#     Aleksander Sapieha (sourceguy68@gmail.com)
+#
+
 WINPATH = build/windows/goblin-warfare.exe
 LINPATH = build/linux/goblin-warfare
 
