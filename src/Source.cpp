@@ -18,11 +18,13 @@
 
 #include "Player.hpp"
 #include "Goblin.hpp"
+#include "Source.hpp"
+#include "save.hpp"
 
 std::list<std::string> leatherBootsRecipe = { "Leather", "String" };
 
 void printMenu() {
-	std::cout << "Goblin Warfare: PC Edition (Alpha 3.01)" << std::endl;
+	std::cout << "Goblin Warfare: PC Edition (Alpha 3.1)" << std::endl;
 	std::cout << "1. Play" << std::endl;
 	std::cout << "2. Exit" << std::endl;
 }
@@ -42,33 +44,28 @@ int main() {
 	int choice;
 	std::cin >> choice;
 	if (choice == 1) {
-		Player player("player", 1000, 100, 1, 0, 100, 0, 0, 10, 0, false, {}, 1000);
-		std::cout << "You, a young kid, heard a legend about the holy scriptures..." << std::endl;
-		pause(1);
-		std::cout << "\"For in seven days Yahweh created the earth...\"" << std::endl;
-		pause(1);
-		std::cout << "But you doubted..." << std::endl;
-		pause(1);
-		std::cout << "You decided to try to get them." << std::endl;
-		std::cout << "Goal: win a battle while holding The Holy Scriptures" << std::endl;
-		system("pause");
-		while (true) {
-			clearScreen();
-			auto& inventory = player.getInventory();
-			if ((std::find(inventory.begin(), inventory.end(), "Holy Scriptures") != inventory.end())
-				&& (std::find(inventory.begin(), inventory.end(), "Leather boots") != inventory.end())) {
-				std::cout << "You gathered all forbidden items.\n";
-				pause(2);
-				std::cout << "You also decided to not use the usable ones.\n";
-				pause(2);
-				std::cout << "Pretty brave of you...\n";
-				pause(2);
-				std::cout << "What have you done?\n";
-				pause(2);
-				std::cout << "I'll give you a moment to realize the consequences...";
-				pause(2);
-				return 0;
-			}
+	Player player = [&]() {
+		try {
+			return load();
+		}
+		catch (const std::runtime_error&) {
+			Player newPlayer("player", 1000, 100, 1, 0, 100, 0, 0,
+							10, 0, false, {}, 1000);
+
+			std::cout << "You, a young kid, heard a legend about the holy scriptures..." << std::endl;
+			pause(1);
+			std::cout << "\"For in seven days Yahweh created the earth...\"" << std::endl;
+			pause(1);
+			std::cout << "But you doubted..." << std::endl;
+			pause(1);
+			std::cout << "You decided to try to get them." << std::endl;
+			std::cout << "Goal: win a battle while holding The Holy Scriptures" << std::endl;
+			system("pause");
+
+			return newPlayer;
+		}
+	}();
+		while(true){
 			std::cout << "What do you want to do?" << std::endl;
 			std::cout << "1. Fight" << std::endl;
 			std::cout << "2. Buy" << std::endl;
@@ -252,6 +249,8 @@ int main() {
 				}
 			}
 			else if (choice == 5) {
+				std::cout << "Saving..." << std::endl;
+				save(player);
 				return 0;
 			}
 		}

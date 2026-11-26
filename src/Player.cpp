@@ -15,39 +15,39 @@ Player::Player(std::string name, int health, int hunger, int level, int xp, int 
 	hasScriptures(hasScriptures), inventory(inventory), maxHealth(maxHealth) {
 };
 
-int Player::getHealth() {
+int Player::getHealth() const {
 	return health;
 }
 
-std::string Player::getName() {
+std::string Player::getName() const {
 	return name;
 }
 
-int Player::getXp() {
+int Player::getXp() const {
 	return xp;
 }
 
-int Player::getXpTilNextLevel() {
+int Player::getXpTilNextLevel() const {
 	return xpTilNextLevel;
 }
 
-int Player::getScore() {
+int Player::getScore() const {
 	return score;
 }
 
-int Player::getHunger() {
+int Player::getHunger() const {
 	return hunger;
 }
 
-int Player::getDamage() {
+int Player::getDamage() const {
 	return damage;
 }
 
-int Player::getGold() {
+int Player::getGold()const  {
 	return gold;
 }
 
-int Player::getLevel() {
+int Player::getLevel() const {
 	return level;
 }
 
@@ -84,7 +84,7 @@ void Player::takegold(int points) {
 	gold = gold - points;
 }
 
-int Player::getArmor() {
+float Player::getArmor() const {
 	return armor;
 }
 
@@ -102,7 +102,7 @@ void Player::takeArmor(float points) {
 	}
 }
 
-bool Player::getScripturesStatus() {
+bool Player::getScripturesStatus() const {
 	return hasScriptures;
 }
 
@@ -118,8 +118,8 @@ void Player::giveXp(int points) {
 	xp = xp + points;
 }
 
-std::list<std::string>& Player::getInventory() {
-	return inventory;
+const std::list<std::string>& Player::getInventory() const {
+    return inventory;
 }
 
 void Player::addToInventory(std::string item) {
@@ -134,6 +134,6 @@ void Player::addMaxHealth(int points) {
 	maxHealth = maxHealth + points;
 }
 
-int Player::getMaxHealth() {
+int Player::getMaxHealth() const {
 	return maxHealth;
 }
