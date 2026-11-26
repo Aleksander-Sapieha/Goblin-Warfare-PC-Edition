@@ -1,0 +1,6 @@
+SDD 1.0
+
+name is string "Example Mod"
+version is string "1.0"
+author is string "YourName"
+game_version is string "3.2"

@@ -15,11 +15,14 @@
 #include <list>
 #include <algorithm> // for std::find
 #include <string>
+#include <vector>
 
 #include "Player.hpp"
 #include "Goblin.hpp"
 #include "Source.hpp"
 #include "save.hpp"
+#include "ModLoader.hpp"
+#include "ItemRegistry.hpp"
 
 std::list<std::string> leatherBootsRecipe = { "Leather", "String" };
 
@@ -38,6 +41,15 @@ void clearScreen() {
 }
 
 int main() {
+	ModLoader modLoader;
+	modLoader.loadMods();
+
+	ItemRegistry itemRegistry;
+	itemRegistry.registerVanillaItems();
+
+	for (const Mod& mod : modLoader.getMods()) {
+		itemRegistry.loadModItems(mod.directory, mod.name);
+	}
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	printMenu();
@@ -126,95 +138,120 @@ int main() {
 			}
 			else if (choice == 2) {
 				clearScreen();
+
 				std::cout << "Gold: " << player.getGold() << std::endl;
-				std::cout << "1. Health potion - Heals 10 hp (100 Gold)" << std::endl;
-				std::cout << "2. Steak - Decreases hunger by 10 (10 Gold)" << std::endl;
-				std::cout << "3. Apple - Decreases hunger by 10 and heals 1 hp (20 Gold)" << std::endl;
-				std::cout << "4. The Holy Scriptures - auto win 1 fight (5000 Gold)" << std::endl;
-				std::cout << "5. LVLUP Potion - Instantly Level Up (100 Gold)" << std::endl;
-				std::cout << "6. Leather - Used in crafting (10 Gold)" << std::endl;
-				std::cout << "7. Exit" << std::endl;
+				std::cout << "=== SHOP ===" << std::endl;
+
+				const auto& shopItems = itemRegistry.getItems();
+
+				for (size_t i = 0; i < shopItems.size(); i++) {
+					std::cout << i + 1 << ". "
+							<< shopItems[i].name
+							<< " (" << shopItems[i].price << " Gold)"
+							<< " [" << shopItems[i].mod << "]"
+							<< std::endl;
+				}
+
+				std::cout << shopItems.size() + 1 << ". Exit" << std::endl;
+
 				int purchase;
 				std::cin >> purchase;
-				if (purchase == 1 && player.getGold() >= 100) {
-					player.addToInventory("Health Potion");
-					std::cout << "Added a health potion to inventory" << std::endl;
-					pause(1);
-				}
-				else if (purchase == 2 && player.getGold() >= 10) {
-					player.addToInventory("Steak");
-					std::cout << "Added a steak to inventory" << std::endl;
-					pause(1);
-				}
-				else if (purchase == 3 && player.getGold() >= 20) {
-					player.addToInventory("Apple");
-					std::cout << "Added an apple to inventory" << std::endl;
-					pause(1);
-				}
-				else if (purchase == 4 && player.getGold() >= 5000) {
-					player.addToInventory("Holy Scriptures");
-					std::cout << "Added the holy scriptures to inventory" << std::endl;
-					pause(1);
-				}
-				else if (purchase == 5 && player.getGold() >= 100) {
-					player.addToInventory("LVLUP Potion");
-					pause(1);
-				}
-				else if (purchase == 6 && player.getGold() >= 10) {
-					player.addToInventory("Leather");
-					pause(1);
-				}
-				else if (purchase == 7) {
+
+				if (purchase == static_cast<int>(shopItems.size() + 1)) {
 					choice = 0;
+					continue;
 				}
-				else {
-					std::cout << "Not enough money, or incorrect choice." << std::endl;
-					choice = 0;
+
+				if (purchase < 1 ||
+					purchase > static_cast<int>(shopItems.size())) {
+					std::cout << "Invalid choice." << std::endl;
 					pause(1);
+					continue;
 				}
+
+				const GameItem& item = shopItems[purchase - 1];
+
+				if (player.getGold() < item.price) {
+					std::cout << "Not enough money!" << std::endl;
+					pause(1);
+					continue;
+				}
+
+				player.addToInventory(item.name);
+
+				// Assumes giveGold adds its argument to the balance.
+				player.takegold(item.price);
+
+				std::cout << "Purchased " << item.name << "!" << std::endl;
+				pause(1);
 			}
 			else if (choice == 3) {
 				if (player.getInventory().empty()) {
-					std::cout << "Your inventory is empty";
+					std::cout << "Your inventory is empty." << std::endl;
 					pause(1);
+					continue;
+				}
+
+				std::cout << "Your items:" << std::endl;
+
+				for (const std::string& item : player.getInventory()) {
+					std::cout << "- " << item << std::endl;
+				}
+
+				std::cout << "Which item do you want to use: ";
+
+				std::string itemName;
+				std::getline(std::cin >> std::ws, itemName);
+
+				const GameItem* item = itemRegistry.getItem(itemName);
+
+				if (!item) {
+					std::cout << "Unknown item." << std::endl;
+					pause(1);
+					continue;
+				}
+
+				if (std::find(
+					player.getInventory().begin(),
+					player.getInventory().end(),
+					itemName
+				) == player.getInventory().end()) {
+					std::cout << "You don't have that item." << std::endl;
+					pause(1);
+					continue;
+				}
+
+				if (item->effect == "heal") {
+					int missingHealth = player.getMaxHealth() - player.getHealth();
+					int healing = std::min(item->amount, missingHealth);
+
+					if (healing <= 0) {
+						std::cout << "Your health is already full." << std::endl;
+						pause(1);
+						continue;
+					}
+
+					player.heal(healing);
+				}
+				else if (item->effect == "food") {
+					player.eat(item->amount);
+				}
+				else if (item->effect == "xp") {
+					player.giveXp(item->amount);
+				}
+				else if (item->effect == "gold") {
+					player.giveGold(item->amount);
 				}
 				else {
-					std::cout << "Your items:" << std::endl;
-					for (std::string item : player.getInventory()) {
-						std::cout << "- " << item << std::endl;
-					}
-					std::cout << "Which item do you want to use: ";
-					std::string item;
-					std::getline(std::cin >> std::ws, item);
-					if (item == "Health Potion") {
-						if (player.getMaxHealth() - player.getHealth() >= 100) {
-							player.heal(100);
-						}
-						else {
-							player.heal(player.getMaxHealth() - player.getHealth());
-						}
-					}
-					else if (item == "Steak") {
-						player.eat(10);
-					}
-					else if (item == "Apple") {
-						if (player.getHealth() < 100) {
-							player.heal(1);
-						}
-						player.eat(10);
-					}
-					else if (item == "Holy Scriptures") {
-						player.giveScriptures();
-					}
-					else if (item == "LVLUP Potion") {
-						player.giveXp(player.getXpTilNextLevel() - player.getXp());
-						player.levelUp();
-					}
-					else if (item == "Leather") {
-						std::cout << "You can't use this item here!" << std::endl;
-						pause(1);
-					}
+					std::cout << "This item has no usable effect." << std::endl;
+					pause(1);
+					continue;
 				}
+
+				player.removeFromInventory(itemName);
+
+				std::cout << "Used " << itemName << "!" << std::endl;
+				pause(1);
 			}
 			else if (choice == 4) {
 				std::cout << "Craftable Items:" << std::endl;

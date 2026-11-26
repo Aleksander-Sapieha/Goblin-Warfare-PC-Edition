@@ -10,7 +10,7 @@
 WINPATH = build/windows/goblin-warfare.exe
 LINPATH = build/linux/goblin-warfare
 
-SRC = src/Source.cpp src/Goblin.cpp src/Player.cpp src/save.cpp
+SRC = src/Source.cpp src/Goblin.cpp src/Player.cpp src/save.cpp src/ModLoader.cpp src/ItemRegistry.cpp
 
 SRC_C = src/SDD/sdd.c src/SDD/sdd_lexer.c src/SDD/sdd_parser.c
 

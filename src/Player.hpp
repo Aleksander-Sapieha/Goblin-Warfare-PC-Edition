@@ -22,7 +22,7 @@ private:
 	int score;
 	int gold;
 	int damage;
-	int armor;
+	float armor;
 	bool hasScriptures;
 	std::list<std::string> inventory;
 	int maxHealth;
