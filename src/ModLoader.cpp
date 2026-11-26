@@ -3,6 +3,7 @@
 #include <cstring>
 
 #include "ModLoader.hpp"
+#include "PluginLoader.hpp"
 extern "C"{
     #include "SDD/sdd.h"
 }
@@ -29,7 +30,10 @@ static std::string getString(Object* object, const char* key) {
     return value->data.string;
 }
 
+
+
 void ModLoader::loadMods() {
+    pluginLoader.unloadAll();
     mods.clear();
 
     if (!fs::exists("mods")) {
@@ -90,8 +94,30 @@ void ModLoader::loadMods() {
             continue;
         }
 
-        if (mod.gameVersion != "3.1") {
+        if (mod.gameVersion != "4.1") {
             std::cout << "[MOD] Incompatible game version: "
+                      << mod.name << std::endl;
+
+            sdd_document_destroy(&document);
+            continue;
+        }
+
+        #ifdef _WIN32
+            fs::path pluginPath = entry.path() / "enemies.dll";
+        #else
+            fs::path pluginPath = entry.path() / "enemies.so";
+        #endif
+
+        if (!fs::exists(pluginPath)) {
+            std::cout << "[MOD] Missing native plugin: "
+                      << mod.name << std::endl;
+
+            sdd_document_destroy(&document);
+            continue;
+        }
+
+        if (!pluginLoader.load(pluginPath.string())) {
+            std::cout << "[MOD] Failed to load plugin: "
                       << mod.name << std::endl;
 
             sdd_document_destroy(&document);
@@ -113,4 +139,8 @@ void ModLoader::loadMods() {
 
 const std::vector<Mod>& ModLoader::getMods() const {
     return mods;
+}
+
+PluginLoader& ModLoader::getPluginLoader() {
+    return pluginLoader;
 }

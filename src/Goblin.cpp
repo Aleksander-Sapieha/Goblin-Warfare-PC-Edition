@@ -13,7 +13,7 @@
 Goblin::Goblin(int level, int scoreValue, int health, int attackPower, int goldReward) 
 	: level(level), scoreValue(scoreValue), health(health), attackPower(attackPower), goldReward(goldReward) {};
 
-void Goblin::attack(Player player) {
+void Goblin::attack(Player& player) {
 	player.takeDamage(attackPower);
 }
 

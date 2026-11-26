@@ -21,7 +21,7 @@ private:
 
 public:
 	Goblin(int level, int scoreValue, int health, int attackPower, int goldReward);
-	void attack(Player player);
+	void attack(Player& player);
 	int getHealth();
 	void takeDamage(int points);
 	int getGoldValue();

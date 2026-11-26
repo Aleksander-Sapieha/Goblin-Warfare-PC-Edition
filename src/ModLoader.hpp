@@ -1,7 +1,10 @@
+
 #pragma once
 
 #include <string>
 #include <vector>
+
+#include "PluginLoader.hpp"
 
 struct Mod {
     std::string name;
@@ -14,8 +17,12 @@ struct Mod {
 class ModLoader {
 private:
     std::vector<Mod> mods;
+    PluginLoader pluginLoader;
 
 public:
     void loadMods();
+
     const std::vector<Mod>& getMods() const;
+
+    PluginLoader& getPluginLoader();
 };
