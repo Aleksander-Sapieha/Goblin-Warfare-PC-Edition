@@ -28,7 +28,7 @@
 std::list<std::string> leatherBootsRecipe = { "Leather", "String" };
 
 void printMenu() {
-	std::cout << "Goblin Warfare: PC Edition (Alpha 4)" << std::endl;
+	std::cout << "Goblin Warfare: PC Edition (Alpha 5)" << std::endl;
 	std::cout << "1. Play" << std::endl;
 	std::cout << "2. Exit" << std::endl;
 }

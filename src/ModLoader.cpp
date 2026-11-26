@@ -94,7 +94,7 @@ void ModLoader::loadMods() {
             continue;
         }
 
-        if (mod.gameVersion != "4.1") {
+        if (mod.gameVersion != "5") {
             std::cout << "[MOD] Incompatible game version: "
                       << mod.name << std::endl;
 
