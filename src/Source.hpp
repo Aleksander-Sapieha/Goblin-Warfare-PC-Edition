@@ -9,7 +9,7 @@
 
 extern std::list<std::string> leatherBootsRecipe;
 
-void printMenu();
+extern void printMenu();
 
-void pause(int seconds);
-void clearScreen();
+extern void pause(int seconds);
+extern void clearScreen();
