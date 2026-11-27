@@ -6,6 +6,8 @@
 
 #include "ModSDK/GWEnemyAPI.hpp"
 
+
+
 #ifdef _WIN32
     #include <windows.h>
     using LibraryHandle = HMODULE;
@@ -16,6 +18,12 @@
 struct RegisteredEnemy {
     std::string id;
     GWEnemyDefinition definition;
+    LibraryHandle pluginHandle;
+};
+
+struct RegisteredItem {
+    std::string id;
+    GWItemDefinition definition;
     LibraryHandle pluginHandle;
 };
 
@@ -34,6 +42,13 @@ private:
         const GWEnemyDefinition* definition
     );
 
+    std::vector<RegisteredItem> items;
+
+    static int GW_CALL registerItem(
+        void* context,
+        const GWItemDefinition* definition
+    );
+
 public:
     PluginLoader() = default;
     ~PluginLoader();
@@ -41,6 +56,7 @@ public:
     bool load(const std::string& path);
 
     const std::vector<RegisteredEnemy>& getEnemies() const;
+    const std::vector<RegisteredItem>& getItems() const;
 
     void unloadAll();
 };

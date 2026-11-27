@@ -21,6 +21,45 @@ PluginLoader::~PluginLoader() {
     unloadAll();
 }
 
+int GW_CALL PluginLoader::registerItem(
+    void* context,
+    const GWItemDefinition* definition
+) {
+    auto* loader = static_cast<PluginLoader*>(context);
+
+    if (!loader || !definition)
+        return 0;
+
+    if (definition->struct_size != sizeof(GWItemDefinition))
+        return 0;
+
+    if (!definition->id ||
+        !definition->name ||
+        !definition->on_use) {
+        return 0;
+    }
+
+    for (const auto& existing : loader->items) {
+        if (existing.id == definition->id) {
+            std::cerr << "[PLUGIN] Duplicate item ID: "
+                      << definition->id << std::endl;
+            return 0;
+        }
+    }
+
+    RegisteredItem item{};
+    item.id = definition->id;
+    item.definition = *definition;
+    item.pluginHandle = nullptr;
+
+    loader->items.push_back(item);
+
+    std::cout << "[PLUGIN] Registered item: "
+              << item.id << std::endl;
+
+    return 1;
+}
+
 int GW_CALL PluginLoader::registerEnemy(
     void* context,
     const GWEnemyDefinition* definition

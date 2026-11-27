@@ -1,14 +1,13 @@
-#include "ItemRegistry.hpp"
-
-
-extern "C"{
-    #include "SDD/sdd.h"
-}
-
 
 #include <iostream>
 #include <cstring>
 #include <limits>
+
+#include "ItemRegistry.hpp"
+
+extern "C" {
+    #include "SDD/sdd.h"
+}
 
 static Value* getValue(Object* object, const char* key) {
     for (size_t i = 0; i < object->count; i++) {
@@ -31,12 +30,12 @@ void ItemRegistry::registerItem(const GameItem& item) {
 }
 
 void ItemRegistry::registerVanillaItems() {
-    registerItem({"Health Potion", 100, "Vanilla", "heal", 100});
-    registerItem({"Steak", 10, "Vanilla", "food", 10});
-    registerItem({"Apple", 20, "Vanilla", "food", 10});
-    registerItem({"Holy Scriptures", 5000, "Vanilla", "none", 0});
-    registerItem({"LVLUP Potion", 100, "Vanilla", "xp", 100});
-    registerItem({"Leather", 10, "Vanilla", "none", 0});
+    registerItem({"1", "Health Potion", 100, "Vanilla", "heal", 100});
+    registerItem({"2", "Steak", 10, "Vanilla", "food", 10});
+    registerItem({"3", "Apple", 20, "Vanilla", "food", 10});
+    registerItem({"4", "Holy Scriptures", 5000, "Vanilla", "none", 0});
+    registerItem({"5", "LVLUP Potion", 100, "Vanilla", "xp", 100});
+    registerItem({"6", "Leather", 10, "Vanilla", "none", 0});
 }
 
 void ItemRegistry::loadModItems(
@@ -108,7 +107,8 @@ void ItemRegistry::loadModItems(
         int effectAmount = 0;
 
         if (effect) {
-            if (effect->type != VALUE_STRING) {
+            if (effect->type != VALUE_STRING ||
+                !effect->data.string) {
                 continue;
             }
 
@@ -131,11 +131,11 @@ void ItemRegistry::loadModItems(
             effectName != "xp" &&
             effectName != "gold") {
             std::cout << "[ITEM] Unknown effect: "
-                    << effectName << std::endl;
+                      << effectName << std::endl;
             continue;
         }
 
-        GameItem item;
+        GameItem item{};
         item.name = name->data.string;
         item.price = static_cast<int>(price->data.integer);
         item.mod = modName;

@@ -49,7 +49,7 @@ void ModLoader::loadMods() {
         fs::path metadataPath = entry.path() / "mod.sdd";
 
         if (!fs::exists(metadataPath)) {
-            std::cout << "[MOD] Missing mod.info: "
+            std::cout << "[MOD] Missing mod.sdd: "
                       << entry.path().filename().string()
                       << std::endl;
             continue;
@@ -94,7 +94,7 @@ void ModLoader::loadMods() {
             continue;
         }
 
-        if (mod.gameVersion != "5") {
+        if (mod.gameVersion != "6.0") {
             std::cout << "[MOD] Incompatible game version: "
                       << mod.name << std::endl;
 

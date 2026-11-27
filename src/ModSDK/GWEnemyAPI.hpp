@@ -10,7 +10,7 @@
     #define GW_CALL
 #endif
 
-#define GW_API_VERSION 1
+#define GW_API_VERSION 2
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,7 +24,58 @@ typedef struct {
         int32_t damage
     );
 
+    void (GW_CALL *heal)(
+        void* context,
+        int32_t amount
+    );
+
+    void (GW_CALL *eat)(
+        void* context,
+        int32_t amount
+    );
+
+    void (GW_CALL *give_xp)(
+        void* context,
+        int32_t amount
+    );
+
+    void (GW_CALL *give_gold)(
+        void* context,
+        int32_t amount
+    );
+
+    int32_t (GW_CALL *get_health)(
+        void* context
+    );
+
+    int32_t (GW_CALL *get_max_health)(
+        void* context
+    );
+
+    int32_t (GW_CALL *get_hunger)(
+        void* context
+    );
+
+    int32_t (GW_CALL *get_gold)(
+        void* context
+    );
+
 } GWPlayerAPI;
+
+typedef struct {
+    uint32_t struct_size;
+
+    const char* id;
+    const char* name;
+    const char* description;
+
+    int32_t price;
+
+    int (GW_CALL *on_use)(
+        const GWPlayerAPI* player
+    );
+
+} GWItemDefinition;
 
 
 typedef struct {
@@ -65,6 +116,11 @@ typedef struct {
     int (GW_CALL *register_enemy)(
         void* context,
         const GWEnemyDefinition* definition
+    );
+
+    int (GW_CALL *register_item)(
+        void* context,
+        const GWItemDefinition* definition
     );
 
 } GWHostAPI;

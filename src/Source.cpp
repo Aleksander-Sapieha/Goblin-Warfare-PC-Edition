@@ -49,6 +49,70 @@ void GW_CALL damagePlayer(void* context, int32_t damage) {
     }
 }
 
+void GW_CALL apiTakeDamage(void* context, int32_t amount) {
+    auto* player = static_cast<Player*>(context);
+    if (player) player->takeDamage(amount);
+}
+
+void GW_CALL apiHeal(void* context, int32_t amount) {
+    auto* player = static_cast<Player*>(context);
+    if (player && amount > 0) player->heal(amount);
+}
+
+void GW_CALL apiEat(void* context, int32_t amount) {
+    auto* player = static_cast<Player*>(context);
+    if (player && amount > 0) player->eat(amount);
+}
+
+void GW_CALL apiGiveXP(void* context, int32_t amount) {
+    auto* player = static_cast<Player*>(context);
+    if (player && amount > 0) player->giveXp(amount);
+}
+
+void GW_CALL apiGiveGold(void* context, int32_t amount) {
+    auto* player = static_cast<Player*>(context);
+    if (player && amount > 0) player->giveGold(amount);
+}
+
+int32_t GW_CALL apiGetHealth(void* context) {
+    auto* player = static_cast<Player*>(context);
+    return player ? player->getHealth() : 0;
+}
+
+int32_t GW_CALL apiGetMaxHealth(void* context) {
+    auto* player = static_cast<Player*>(context);
+    return player ? player->getMaxHealth() : 0;
+}
+
+int32_t GW_CALL apiGetHunger(void* context) {
+    auto* player = static_cast<Player*>(context);
+    return player ? player->getHunger() : 0;
+}
+
+int32_t GW_CALL apiGetGold(void* context) {
+    auto* player = static_cast<Player*>(context);
+    return player ? player->getGold() : 0;
+}
+
+GWPlayerAPI createPlayerAPI(Player& player) {
+    GWPlayerAPI api{};
+
+    api.context = &player;
+
+    api.take_damage = apiTakeDamage;
+    api.heal = apiHeal;
+    api.eat = apiEat;
+    api.give_xp = apiGiveXP;
+    api.give_gold = apiGiveGold;
+
+    api.get_health = apiGetHealth;
+    api.get_max_health = apiGetMaxHealth;
+    api.get_hunger = apiGetHunger;
+    api.get_gold = apiGetGold;
+
+    return api;
+}
+
 int main() {
 	ModLoader modLoader;
 	modLoader.loadMods();
@@ -321,7 +385,9 @@ int main() {
 					pause(1);
 				}
 				else if (choice == 3) {
-					if (player.getInventory().empty()) {
+					if (false) {
+						// I got so mad, i wrote this
+					}else{
 						std::cout << "Your inventory is empty." << std::endl;
 						pause(1);
 						continue;
@@ -340,7 +406,19 @@ int main() {
 
 					const GameItem* item = itemRegistry.getItem(itemName);
 
-					if (!item) {
+					PluginLoader& pluginLoader = modLoader.getPluginLoader();
+					const auto& pluginItems = pluginLoader.getItems();
+
+					auto nativeItem = std::find_if(
+						pluginItems.begin(),
+						pluginItems.end(),
+						[&](const RegisteredItem& registered) {
+							return registered.definition.name &&
+								itemName == registered.definition.name;
+						}
+					);
+
+					if (!item && nativeItem == pluginItems.end()) {
 						std::cout << "Unknown item." << std::endl;
 						pause(1);
 						continue;
@@ -387,6 +465,9 @@ int main() {
 
 					std::cout << "Used " << itemName << "!" << std::endl;
 					pause(1);
+					if (player.getInventory().empty()) {
+					}
+
 				}
 				else if (choice == 4) {
 					std::cout << "Craftable Items:" << std::endl;

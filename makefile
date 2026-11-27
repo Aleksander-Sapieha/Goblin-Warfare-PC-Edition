@@ -22,6 +22,8 @@ CPPFLAGS = -IModSDK
 SDK = src/ModSDK
 PLUGIN_SRC = mods/Dragon\ Mod/Dragon.cpp
 
+APPLE_SRC=  mods/Apple\ Mod/Apple.cpp
+
 all: windows linux
 	@echo "Make All Finished"
 
@@ -40,16 +42,6 @@ windows:
 	$(WIN_CXX) $(CPPFLAGS) $(SRC) sdd.o sdd_lexer.o sdd_parser.o -static -o $(WINPATH)
 	@rm -f sdd.o sdd_lexer.o sdd_parser.o
 	@echo "Make Windows Finished"
-
-plugin-linux:
-	@mkdir -p "mods/Dragon Mod"
-	$(CXX) -std=c++17 -shared -fPIC -I$(SDK) $(PLUGIN_SRC) -o "mods/Dragon Mod/enemies.so"
-
-plugin-windows:
-	@mkdir -p "mods/Dragon Mod"
-	$(WIN_CXX) -std=c++17 -shared -I$(SDK) $(PLUGIN_SRC) -o "mods/Dragon Mod/enemies.dll"
-
-plugins: plugin-linux plugin-windows
 
 clean:
 	@rm -f $(WINPATH) $(LINPATH)
