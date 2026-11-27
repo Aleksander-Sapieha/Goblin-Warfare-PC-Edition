@@ -1,4 +1,4 @@
-# Goblin Warfare Enemy Modding API
+# Goblin Warfare PC Edition Enemy Modding API
 
 **API Name:** GW Enemy API
 **API Version:** 1
